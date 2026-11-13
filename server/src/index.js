@@ -32,5 +32,9 @@ app.use('/api', storeRoutes);      // cart, checkout, orders, library, wishlist 
 app.use('/api', (_req, res) => res.status(404).json({ error: 'Unknown API route.' }));
 app.use(errorHandler);
 
+export default app;
+
 const port = Number(process.env.PORT) || 4000;
-app.listen(port, () => console.log(`Vapor API listening on http://localhost:${port}`));
+if (process.env.VERCEL !== '1') {
+  app.listen(port, () => console.log(`Vapor API listening on http://localhost:${port}`));
+}

@@ -87,6 +87,19 @@ npm run dev                   # API on http://localhost:4000, website on http://
 ```
 Open **http://localhost:5173**.
 
+### Deploying on Vercel
+
+The repository includes `vercel.json` and a Vercel Function entry point for the Express API. Import the repository in Vercel with the project root set to the repository root. The build installs the root, server, and client packages, then builds the Vite client into `client/dist`.
+
+Configure these environment variables for the Vercel project:
+
+| Variable | Value |
+|---|---|
+| `DATABASE_URL` | Connection string for a hosted PostgreSQL database |
+| `JWT_SECRET` | A long, randomly generated secret used to sign login tokens |
+
+Initialize the hosted database once by applying `server/db/schema.sql` and then `server/db/seed.sql`. Do not run the seed script on every deployment; it resets the sample data. Vercel serves the React app and its `/api/*` requests from the same domain.
+
 ### Demo accounts (password for all: `password123`)
 | Username | Role | Notes |
 |---|---|---|
