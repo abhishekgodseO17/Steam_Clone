@@ -4,7 +4,7 @@
   "installCommand": "npm run setup",
   "buildCommand": "npm run build:vercel",
   "outputDirectory": "client/dist",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    { "src": "/(?!api(?:/|$)|assets(?:/|$)).*", "dest": "/index.html" }
   ]
 }
