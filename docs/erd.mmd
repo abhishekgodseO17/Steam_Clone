@@ -1,0 +1,140 @@
+erDiagram
+    USERS ||--o{ ORDERS : places
+    USERS ||--o{ CART_ITEMS : has
+    USERS ||--o{ WISHLIST : saves
+    USERS ||--o{ LIBRARY : owns
+    USERS ||--o{ REVIEWS : writes
+    USERS ||--o{ USER_ACHIEVEMENTS : unlocks
+    USERS ||--o{ FRIENDSHIPS : "requests / receives"
+
+    DEVELOPERS |o--o{ GAMES : develops
+    PUBLISHERS |o--o{ GAMES : publishes
+    GAMES ||--o{ GAME_GENRES : ""
+    GENRES ||--o{ GAME_GENRES : ""
+    GAMES ||--o{ GAME_PLATFORMS : ""
+    PLATFORMS ||--o{ GAME_PLATFORMS : ""
+
+    ORDERS ||--|{ ORDER_ITEMS : contains
+    GAMES ||--o{ ORDER_ITEMS : "sold as"
+    ORDERS |o--o{ LIBRARY : grants
+    GAMES ||--o{ LIBRARY : "owned in"
+    GAMES ||--o{ CART_ITEMS : "added to"
+    GAMES ||--o{ WISHLIST : "wished in"
+    GAMES ||--o{ REVIEWS : receives
+    GAMES ||--o{ ACHIEVEMENTS : defines
+    ACHIEVEMENTS ||--o{ USER_ACHIEVEMENTS : ""
+
+    USERS {
+        int user_id PK
+        varchar username UK
+        varchar email UK
+        varchar password_hash
+        varchar display_name
+        char country
+        text bio
+        numeric wallet_balance "CHECK >= 0"
+        boolean is_admin
+        timestamptz created_at
+    }
+    DEVELOPERS {
+        int developer_id PK
+        varchar name UK
+        varchar country
+        smallint founded_year
+        varchar website
+    }
+    PUBLISHERS {
+        int publisher_id PK
+        varchar name UK
+        varchar country
+        varchar website
+    }
+    GAMES {
+        int game_id PK
+        varchar title UK
+        varchar short_description
+        text description
+        numeric price "CHECK >= 0"
+        smallint discount_percent "0-100"
+        date release_date
+        varchar age_rating
+        int developer_id FK
+        int publisher_id FK
+        varchar cover_color
+        boolean is_published
+    }
+    GENRES {
+        int genre_id PK
+        varchar name UK
+    }
+    GAME_GENRES {
+        int game_id PK,FK
+        int genre_id PK,FK
+    }
+    PLATFORMS {
+        int platform_id PK
+        varchar name UK
+    }
+    GAME_PLATFORMS {
+        int game_id PK,FK
+        int platform_id PK,FK
+    }
+    CART_ITEMS {
+        int user_id PK,FK
+        int game_id PK,FK
+        timestamptz added_at
+    }
+    WISHLIST {
+        int user_id PK,FK
+        int game_id PK,FK
+        timestamptz added_at
+    }
+    ORDERS {
+        int order_id PK
+        int user_id FK
+        numeric total_amount
+        varchar payment_method
+        varchar status "completed | refunded"
+        timestamptz created_at
+    }
+    ORDER_ITEMS {
+        int order_id PK,FK
+        int game_id PK,FK
+        numeric price_paid "price snapshot"
+    }
+    LIBRARY {
+        int user_id PK,FK
+        int game_id PK,FK
+        int order_id FK
+        timestamptz acquired_at
+        int playtime_minutes
+        timestamptz last_played_at
+        boolean is_favorite
+    }
+    REVIEWS {
+        int review_id PK
+        int user_id FK
+        int game_id FK
+        boolean recommended
+        text body
+        int helpful_count
+        timestamptz created_at
+        timestamptz updated_at
+    }
+    FRIENDSHIPS {
+        int requester_id PK,FK
+        int addressee_id PK,FK
+        varchar status "pending | accepted"
+        timestamptz created_at
+    }
+    ACHIEVEMENTS {
+        int achievement_id PK
+        int game_id FK
+        varchar name
+        varchar description
+    }
+    USER_ACHIEVEMENTS {
+        int user_id PK,FK
+        int achievement_id PK,FK
+        timestamptz unlocked_at
+    }

@@ -1,0 +1,16 @@
+# Optional: run PostgreSQL in Docker instead of installing it locally.
+#   docker compose up -d
+services:
+  db:
+    image: postgres:16
+    container_name: vapor-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: vapor
+    ports:
+      - "5432:5432"
+    volumes:
+      - vapor-data:/var/lib/postgresql/data
+volumes:
+  vapor-data:

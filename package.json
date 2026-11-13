@@ -1,0 +1,14 @@
+{
+  "name": "vapor",
+  "private": true,
+  "description": "Vapor — a Steam-inspired game store (PostgreSQL + Express + React)",
+  "scripts": {
+    "setup": "npm install && npm --prefix server install && npm --prefix client install",
+    "db:init": "npm --prefix server run db:init",
+    "dev": "concurrently -n api,web -c blue,green \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "build": "npm --prefix client run build"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
